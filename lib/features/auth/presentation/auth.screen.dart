@@ -35,6 +35,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           );
         } else if (state is SignInSuccess) {
+          context.read<HomeBloc>().add(const OnFetchData());
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

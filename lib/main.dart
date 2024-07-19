@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/index.dart';
 import 'package:test_app/features/auth/index.dart';
+import 'package:test_app/features/home/index.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +17,19 @@ class MyApp extends StatelessWidget {
     // Set the device orientation to portrait only.
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return BlocProvider(
-      create: (context) =>
-          SignInBloc(repository: RepositoryImpl(ApiServiceImpl())),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SignInBloc>(
+          create: (BuildContext context) => SignInBloc(
+            repository: RepositoryImpl(ApiServiceImpl()),
+          ),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (BuildContext context) => HomeBloc(
+            repository: HomeRepositoryImpl(HomeApiServiceImpl()),
+          ),
+        ),
+      ],
       child: MaterialApp(
         title: 'Test project',
         debugShowCheckedModeBanner: false,
