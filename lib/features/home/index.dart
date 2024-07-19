@@ -1,1 +1,11 @@
 export 'presentation/home.screen.dart';
+export 'presentation/bloc/home_bloc.dart';
+export 'domain/repository.dart';
+export 'domain/home_data.dart';
+export 'data/repository_impl.dart';
+export 'data/api_service.dart';
+export 'presentation/widgets/tile.dart';
+export 'presentation/widgets/photo_description.dart';
+export 'presentation/widgets/photo_search.dart';
+export 'presentation/widgets/drawer.dart';
+export 'presentation/widgets/user_info.dart';
