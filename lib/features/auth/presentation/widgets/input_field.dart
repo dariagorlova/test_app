@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/index.dart';
 
-class InputField extends StatelessWidget {
+class InputField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final String labelText;
@@ -9,7 +9,6 @@ class InputField extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
-  final String? errorMsg;
   final bool enabled;
 
   const InputField({
@@ -22,51 +21,10 @@ class InputField extends StatelessWidget {
     required this.keyboardType,
     this.validator,
     this.focusNode,
-    this.errorMsg,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: validator,
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      focusNode: focusNode,
-      enabled: enabled,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        labelText: labelText,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.primary,
-            width: 2,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-            width: 2,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-            width: 2,
-          ),
-        ),
-        hintText: hintText,
-        errorText: errorMsg,
-      ),
-    );
-  }
+  State<InputField> createState() => _InputFieldState();
 
   factory InputField.email({
     required TextEditingController controller,
@@ -109,4 +67,66 @@ class InputField extends StatelessWidget {
           return null;
         },
       );
+}
+
+class _InputFieldState extends State<InputField> {
+  String? errorMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Focus(
+      onFocusChange: (value) {
+        if (!value) {
+          setState(() {
+            errorMessage = widget.validator?.call(widget.controller.text);
+          });
+        } else {
+          setState(() {
+            errorMessage = null;
+          });
+        }
+      },
+      child: TextFormField(
+        validator: widget.validator,
+        controller: widget.controller,
+        obscureText: widget.obscureText,
+        keyboardType: widget.keyboardType,
+        focusNode: widget.focusNode,
+        enabled: widget.enabled,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          labelText: widget.labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          disabledBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.outline),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.outline),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.primary,
+              width: 2,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.error,
+              width: 2,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.error,
+              width: 2,
+            ),
+          ),
+          hintText: widget.hintText,
+          errorText: errorMessage,
+        ),
+      ),
+    );
+  }
 }
