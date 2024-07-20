@@ -1,16 +1,17 @@
 # test_app
 
-A new Flutter project.
+My realization of the test task.
 
-## Getting Started
+## Features of the app
 
-This project is a starting point for a Flutter application.
+After the app launches User sees the login screen where he can put in his credentials (email, password).
+There is a separate validation for email and password fields. 
 
-A few resources to get you started if this is your first Flutter project:
+After a successful login process, the app redirects the User to the main screen, where there is a list of alphabetically sorted cards (data was loaded from the Internet and locally sorted).
+Any moment to refresh the list the User can swipe down.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+There is a search realization in the app. To launch it, you need to press the button.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The drawer contains a user card with an avatar image, user name, email (data obtained from the Internet during the login process), and the log-out button (pressing the logout button redirects to the Login screen). 
+
+The app supports dark and light mode.
