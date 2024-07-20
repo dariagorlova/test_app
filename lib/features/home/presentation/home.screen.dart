@@ -39,16 +39,21 @@ class HomeScreen extends StatelessWidget {
 
           return Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: ListView.builder(
-                itemCount: data!.length,
-                itemBuilder: (context, index) {
-                  return TileWidget(
-                    data: data![index],
-                    isFirstForGroup: index == 0 ||
-                        data![index].photographer[0] !=
-                            data![index - 1].photographer[0],
-                  );
-                }),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                context.read<HomeBloc>().add(const OnFetchData());
+              },
+              child: ListView.builder(
+                  itemCount: data!.length,
+                  itemBuilder: (context, index) {
+                    return TileWidget(
+                      data: data![index],
+                      isFirstForGroup: index == 0 ||
+                          data![index].photographer[0] !=
+                              data![index - 1].photographer[0],
+                    );
+                  }),
+            ),
           );
         }),
       ),
